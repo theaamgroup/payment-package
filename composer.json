@@ -1,0 +1,27 @@
+{
+    "name": "theaamgroup/payment-package",
+    "type": "library",
+    "description": "Provides a PHP interface for The AAM Group's payment processor.",
+    "keywords": [
+        "the aam group",
+        "aam"
+    ],
+    "homepage": "https://github.com/theaamgroup/payment-package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jodi Nichols",
+            "email": "jodin@theaamgroup.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AAM\\Payment\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.3",
+        "ext-curl": "*"
+    }
+}
