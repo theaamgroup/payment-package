@@ -2,7 +2,7 @@
 
 namespace AAM\Payment\Api;
 
-class Transaction implements JsonSerializable
+class Transaction implements \JsonSerializable
 {
     /**
      * Transaction class: Ties into the PHP JSON Functions & makes them easily available to the RestGateway class.
