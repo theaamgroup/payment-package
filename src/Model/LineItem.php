@@ -1,6 +1,6 @@
 <?php
 
-namespace AAM\Payment;
+namespace AAM\Payment\Model;
 
 class LineItem
 {

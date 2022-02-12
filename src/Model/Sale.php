@@ -1,6 +1,6 @@
 <?php
 
-namespace AAM\Payment;
+namespace AAM\Payment\Model;
 
 class Sale
 {
@@ -16,8 +16,6 @@ class Sale
     const RECURRING_ANNUALLY = 'annually';
     const DATE_FORMAT = 'm/d/Y';
 
-    protected $merchant_key = '';
-    protected $processor_id = '';
     protected $credit_card_cryptogram = '';
     protected $order_id = '';
     protected $owner_city = '';
@@ -35,14 +33,9 @@ class Sale
     protected $recurring_start_date = '';
     protected $recurring_end_date = '';
 
-    public function __construct(
-        string $merchant_key,
-        string $processor_id,
-        string $credit_card_cryptogram
-    ) {
-        $this->merchant_key = $merchant_key;
-        $this->processor_id = $processor_id;
-        $this->credit_card_cryptogram = $credit_card_cryptogram;
+    public function setCryptogram(string $cryptogram): void
+    {
+        $this->credit_card_cryptogram = $cryptogram;
     }
 
     public function setOrderId(string $order_id): void
@@ -100,7 +93,7 @@ class Sale
         $this->transaction_amount = $transaction_amount;
     }
 
-    public function addLevel3Item(\AAM\Payment\LineItem $line_item): void
+    public function addLevel3Item(LineItem $line_item): void
     {
         $this->level3_items[] = $line_item->getData();
     }
@@ -123,8 +116,6 @@ class Sale
     public function getData(): array
     {
         $fields = [
-            'merchantKey' => $this->merchant_key,
-            'processorId' => $this->processor_id,
             'creditCardCryptogram' => $this->credit_card_cryptogram,
             'orderId' => $this->order_id,
             'ownerName' => $this->owner_name,

@@ -1,21 +1,25 @@
 <?php
 
+use AAM\Payment\CreditCardCharge;
+use AAM\Payment\HostedPaymentForm;
+use AAM\Payment\Model\LineItem;
+use AAM\Payment\Model\Merchant;
+use AAM\Payment\Model\Sale;
+
+require __DIR__ . '/../vendor/autoload.php';
+
 // Include config file containing constants for merchant credentials
-// include './MerchantInfo.php';
+require __DIR__ . '/../config/MerchantInfo.php';
 
-include '../src/api/RestGateway.php';
-include '../src/HostedPaymentForm.php';
-include '../src/Sale.php';
-include '../src/LineItem.php';
-
-$hosted_form = new AAM\Payment\HostedPaymentForm(TRANSACTION_CENTER_ID, PROCESSOR_ID);
+$hosted_form = new HostedPaymentForm(TRANSACTION_CENTER_ID, PROCESSOR_ID);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = [];
     $cryptogram = $_POST['cryptogram'] ?? '';
 
     if ($cryptogram) {
-        $sale = new AAM\Payment\Sale(MERCHANT_KEY, PROCESSOR_ID, $cryptogram);
+        $sale = new Sale();
+        $sale->setCryptogram($cryptogram);
         $sale->setTransactionAmount('1.00');
 
         // Optional data for owner
@@ -29,25 +33,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sale->setOwnerPhone('423-282-0211');
 
         // Optional data for setting up recurring transactions
-        $sale->setRecurring(AAM\Payment\Sale::RECURRING_MONTHLY);
-        $sale->setRecurringStartDate(new DateTime('+1 day'));
+        $sale->setRecurring(Sale::RECURRING_MONTHLY);
+        $sale->setRecurringStartDate(new \DateTime('+1 day'));
 
         // Optional data for add line items (level 3 data)
-        $line_item = new AAM\Payment\LineItem();
+        $line_item = new LineItem();
         $line_item->setDescription('Product 1');
         $line_item->setNumber('AAM123');
         $line_item->setPrice('1.00');
         $sale->addLevel3Item($line_item);
 
-        // Send Sale data to Rest Gateway
-        $sale_data = $sale->getData();
-        $rest_gateway = new AAM\Payment\Api\RestGateway();
-        $rest_gateway->createSale($sale_data);
+        // Create credit card charge
+        $merchant = new Merchant(MERCHANT_KEY, PROCESSOR_ID);
+        $charge = new CreditCardCharge($merchant);
+        $response = $charge->createSale($sale);
 
         $response = array_merge(
-            ['sent' => $sale_data],
-            ['result' => $rest_gateway->Result],
-            ['status' => $rest_gateway->Status]
+            ['sent' => $sale->getData()],
+            ['result' => $response->getResult()],
+            ['status' => $response->getStatus()]
         );
     }
 
