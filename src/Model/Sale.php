@@ -4,18 +4,6 @@ namespace AAM\Payment\Model;
 
 class Sale
 {
-    const RECURRING_NONE = 'none';
-    const RECURRING_DAILY = 'daily';
-    const RECURRING_WEEKLY = 'weekly';
-    const RECURRING_BIWEEKLY = 'biweekly';
-    const RECURRING_TRIWEEKLY = 'triweekly';
-    const RECURRING_MONTHLY = 'monthly';
-    const RECURRING_BIMONTHLY = 'bimonthly';
-    const RECURRING_QUARTERLY = 'quarterly';
-    const RECURRING_SEMIANNUALLY = 'semiannually';
-    const RECURRING_ANNUALLY = 'annually';
-    const DATE_FORMAT = 'm/d/Y';
-
     protected $credit_card_cryptogram = '';
     protected $order_id = '';
     protected $owner_city = '';
@@ -105,12 +93,12 @@ class Sale
 
     public function setRecurringStartDate(\DateTime $recurring_start_date): void
     {
-        $this->recurring_start_date = $recurring_start_date->format(self::DATE_FORMAT);
+        $this->recurring_start_date = $recurring_start_date->format(RecurringType::RECURRING_DATE_FORMAT);
     }
 
     public function setRecurringEndDate(\DateTime $recurring_end_date): void
     {
-        $this->recurring_end_date = $recurring_end_date->format(self::DATE_FORMAT);
+        $this->recurring_end_date = $recurring_end_date->format(RecurringType::RECURRING_DATE_FORMAT);
     }
 
     public function getData(): array
