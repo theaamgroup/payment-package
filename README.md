@@ -11,6 +11,9 @@ This integration library for the 1stPay (First American) payment gateway provide
 
 ## Resources
 **Documentation:** http://support.1stpaygateway.net/gateway/Docs/GettingStarted/Introduction.html
+
 **Test data:** http://support.1stpaygateway.net/gateway/Docs/Appendix/TestData.html
+
 **Where to view transactions:** https://secure.1stpaygateway.net/secure/login/login.aspx
+
 **How to get keys:** http://support.1stpaygateway.net/transaction-center.aspx?article=gateway-options
