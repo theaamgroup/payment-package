@@ -5,6 +5,9 @@ namespace AAM\Payment\Model;
 class QueryResult
 {
     protected $order = [];
+    protected $transaction_type = '';
+    protected $auth_code = '';
+    protected $order_id = '';
     protected $transaction_id = '';
     protected $reference_number = '';
     protected $billing_street = '';
@@ -19,6 +22,7 @@ class QueryResult
     protected $batch_number = '';
     protected $is_success = false;
     protected $is_settled = false;
+    protected $is_refund = false;
     protected $amount = 0;
     protected $transaction_date_time = '';
     protected $card_number = '';
@@ -32,6 +36,9 @@ class QueryResult
     public function __construct(array $order)
     {
         $this->order = $order;
+        $this->transaction_type = $this->getOrderInfoProp('transactionType');
+        $this->auth_code = $this->getOrderInfoProp('authCode');
+        $this->order_id = $this->getOrderInfoProp('orderId');
         $this->transaction_id = $order['transactionId'] ?? '';
         $this->reference_number = $order['referenceNumber'] ?? '';
         $this->billing_street = $this->getBillingProp('street');
@@ -46,6 +53,7 @@ class QueryResult
         $this->batch_number = $this->getOrderInfoProp('batchNumber');
         $this->is_success = !empty($this->getOrderInfoProp('isSuccessful'));
         $this->is_settled = !empty($this->getOrderInfoProp('settled'));
+        $this->is_refund = $this->transaction_type === 'credit';
         $this->amount = $this->getOrderInfoProp('amount');
         $this->transaction_date_time = $this->getOrderInfoProp('transDateAndTime');
         $this->card_number = $this->getCCProp('cardNumber');
@@ -80,6 +88,9 @@ class QueryResult
     public function getData(): array
     {
         return [
+            'transaction_type' => $this->transaction_type,
+            'auth_code' => $this->auth_code,
+            'order_id' => $this->order_id,
             'transaction_id' => $this->transaction_id,
             'reference_number' => $this->reference_number,
             'billing_street' => $this->billing_street,
@@ -94,6 +105,7 @@ class QueryResult
             'batch_number' => $this->batch_number,
             'is_success' => $this->is_success,
             'is_settled' => $this->is_settled,
+            'is_refund' => $this->is_refund,
             'amount' => $this->amount,
             'transaction_date_time' => $this->transaction_date_time,
             'card_number' => $this->card_number,

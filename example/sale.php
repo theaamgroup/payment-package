@@ -4,6 +4,7 @@ use AAM\Payment\CreditCardCharge;
 use AAM\Payment\HostedPaymentForm;
 use AAM\Payment\Model\LineItem;
 use AAM\Payment\Model\Merchant;
+use AAM\Payment\Model\RecurringType;
 use AAM\Payment\Model\Sale;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sale->setOwnerPhone('423-282-0211');
 
         // Optional data for setting up recurring transactions
-        $sale->setRecurring(Sale::RECURRING_MONTHLY);
+        $sale->setRecurring(RecurringType::RECURRING_MONTHLY);
         $sale->setRecurringStartDate(new \DateTime('+1 day'));
 
         // Optional data for add line items (level 3 data)
