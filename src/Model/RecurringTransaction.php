@@ -47,22 +47,27 @@ class RecurringTransaction
 
     public function setOwnerZip(string $owner_zip): void
     {
-        $this->owner_zip = $owner_zip;
+        $this->owner_zip = $this->truncate($owner_zip, 10);
     }
 
     public function setOwnerPhone(string $owner_phone): void
     {
-        $this->owner_phone = $owner_phone;
+        $this->owner_phone = $this->truncate($owner_phone, 25);
     }
 
     public function setOwnerEmail(string $owner_email): void
     {
-        $this->owner_email = $owner_email;
+        $this->owner_email = $this->truncate($owner_email, 300);
     }
 
     public function setSendInvoice(bool $send_invoice): void
     {
         $this->send_invoice = $send_invoice ? '1' : '0';
+    }
+
+    private function truncate(string $value, int $length)
+    {
+        return substr($value, 0, $length);
     }
 
     public function getData(): array

@@ -14,7 +14,7 @@ class LineItem
 
     public function setDescription(string $description): void
     {
-        $this->description = $description;
+        $this->description = $this->truncate($description, 35);
     }
 
     public function setNumber(string $number): void
@@ -45,6 +45,11 @@ class LineItem
     public function setItemDiscountRate(string $item_discount_rate): void
     {
         $this->item_discount_rate = $item_discount_rate;
+    }
+
+    private function truncate(string $value, int $length)
+    {
+        return substr($value, 0, $length);
     }
 
     public function getData(): array

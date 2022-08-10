@@ -28,52 +28,52 @@ class Sale
 
     public function setOrderId(string $order_id): void
     {
-        $this->order_id = $order_id;
+        $this->order_id = $this->truncate($order_id, 50);
     }
 
     public function setOwnerName(string $owner_name): void
     {
-        $this->owner_name = $owner_name;
+        $this->owner_name = $this->truncate($owner_name, 750);
     }
 
     public function setOwnerEmail(string $owner_email): void
     {
-        $this->owner_email = $owner_email;
+        $this->owner_email = $this->truncate($owner_email, 300);
     }
 
     public function setOwnerPhone(string $owner_phone): void
     {
-        $this->owner_phone = $owner_phone;
+        $this->owner_phone = $this->truncate($owner_phone, 25);
     }
 
     public function setOwnerStreet(string $owner_street): void
     {
-        $this->owner_street = $owner_street;
+        $this->owner_street = $this->truncate($owner_street, 250);
     }
 
     public function setOwnerStreet2(string $owner_street2): void
     {
-        $this->owner_street2 = $owner_street2;
+        $this->owner_street2 = $this->truncate($owner_street2, 250);
     }
 
     public function setOwnerCity(string $owner_city): void
     {
-        $this->owner_city = $owner_city;
+        $this->owner_city = $this->truncate($owner_city, 100);
     }
 
     public function setOwnerState(string $owner_state): void
     {
-        $this->owner_state = $owner_state;
+        $this->owner_state = $this->truncate($owner_state, 100);
     }
 
     public function setOwnerCountry(string $owner_country): void
     {
-        $this->owner_country = $owner_country;
+        $this->owner_country = $this->truncate($owner_country, 200);
     }
 
     public function setOwnerZip(string $owner_zip): void
     {
-        $this->owner_zip = $owner_zip;
+        $this->owner_zip = $this->truncate($owner_zip, 10);
     }
 
     public function setTransactionAmount(string $transaction_amount): void
@@ -99,6 +99,11 @@ class Sale
     public function setRecurringEndDate(\DateTime $recurring_end_date): void
     {
         $this->recurring_end_date = $recurring_end_date->format(RecurringType::RECURRING_DATE_FORMAT);
+    }
+
+    private function truncate(string $value, int $length)
+    {
+        return substr($value, 0, $length);
     }
 
     public function getData(): array
